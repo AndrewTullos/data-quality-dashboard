@@ -22,10 +22,11 @@ CREATE TABLE transactions (
     account_id INT NOT NULL,
     transaction_date DATE NOT NULL
         CHECK (transaction_date <= CURRENT_DATE),
+    balance_after DECIMAL(18,2) NOT NULL,
     transaction_amount DECIMAL(18,2) NOT NULL
         CHECK (transaction_amount <> 0),
 
-    transaction_currency VARCHAR(10) NOT NULL,
+    transaction_currency VARCHAR(3) NOT NULL,
     transaction_type VARCHAR(20) NOT NULL
         CHECK (transaction_type IN ('DEBIT', 'CREDIT')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -58,13 +59,12 @@ CREATE TABLE data_quality_logs (
     -- INFO, WARNING, CRITICAL
 
     status VARCHAR(20) NOT NULL,
-    -- PASSED, FAILED
+-- PASSED, FAILED
 
     run_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     pipeline_name VARCHAR(100),
-    triggered_by VARCHAR(50)
-    -- SCHEDULED, MANUAL, BACKFILL
+    triggered_by VARCHAR(50)    -- SCHEDULED, MANUAL, BACKFILL
 );
 
 INSERT INTO data_quality_logs (
